@@ -1,0 +1,34 @@
+- [ ] 1 racing/contract race will end in block(x). - version 0.0.1
+    - [ ] Add revert trasaction if write fail.(https://medium.com/blockchannel/the-use-of-revert-assert-and-require-in-solidity-and-the-new-revert-opcode-in-the-evm-1a3a7990e06e)
+    - [ ] The race end with default value. - (add EasyMoneyRace)version 0.0.1
+    - [ ] The winner will set named(will be only address if not set) in contract after retrived money back. - version 0.0.1
+    - [ ] The race end can be specify by contract deployer. - version 0.0.2
+    - [ ] with restricted write command/address - version 0.1.0
+    - [ ] with same address can add money until block(x-1) - version 0.1.1
+- [ ] The owner can make a new race with same contract. - (add CreatorMoneyRace) version 0.2.0
+- [ ] The race will start every x block and last race will end. - (add NatureMoneyRace contract) version 0.3.0
+    - [ ] The previous can't be paticipate only can view the winner if their was the winner in that race.
+- [ ] Upgrade by use a token instead of main network coin.
+    - [ ] learn to make simple token contract.(https://www.quicknode.com/guides/solidity/how-to-create-and-deploy-an-erc20-token)
+    - [ ] Design module with core money racing that will remodel to core function.
+    - [ ] Update/Create a todo list.
+    - [ ] Create another project.
+    - [ ] Refactor version 0.3.0 to core function.
+    - [ ] How coin can be obtain?(Answer and make list to acheive those task to actual code)
+        - [ ] Do an activity to obtain coin?
+        - [ ] Farm to get coin?
+        - [ ] Distribute like pancake IPO?
+        - [ ] Pact with other coin value and can be exchange 1 by 1?
+- [ ] Upgrade by add a NFT as a prize.
+    - [ ] learn to create the NFT contract.(https://www.quicknode.com/guides/solidity/how-to-create-and-deploy-an-erc-721-nft)
+    - [ ] Design module with core money racing that will remodel to core function.
+    - [ ] Update/Create a todo list.
+    - [ ] Create another project.
+    - [ ] Refactor version 0.3.0 to core function.
+    - [ ] make NFT swap with other
+        - [ ] make NFT transfer function.(Did it transferable by default in erc721 or erc1155? Did erc1155 one use URIs in contract? If don't want may be not specify one)
+        - [ ] make swap function with others NFT.
+        - [ ] make swap function for many to many NFT. Swap like ragnarok item swap method.
+        - [ ] make NFT swap with token function.
+        - [ ] make NFT swap with main network coin.
+- [ ] Upgrade by add a NFT auction and send the most money to NFT minter.
