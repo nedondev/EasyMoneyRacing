@@ -1,7 +1,11 @@
 {
   "dependencies": {
+    "@openzeppelin/contracts": "^4.4.2",
     "@truffle/hdwallet-provider": "^2.0.3",
     "dotenv": "^16.0.0",
     "ganache-time-traveler": "^1.0.16"
+  },
+  "devDependencies": {
+    "@openzeppelin/test-helpers": "^0.5.15"
   }
 }

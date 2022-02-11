@@ -1,8 +1,9 @@
 - [ ] 1 racing/contract race will end in block(x). - version 0.0.1
-    - [ ] Add revert trasaction if write fail.(https://medium.com/blockchannel/the-use-of-revert-assert-and-require-in-solidity-and-the-new-revert-opcode-in-the-evm-1a3a7990e06e)
-    - [ ] The race end with default value. - (add EasyMoneyRace)version 0.0.1
-    - [ ] The winner will set named(will be only address if not set) in contract after retrived money back. - version 0.0.1
-    - [ ] The race end can be specify by contract deployer. - version 0.0.2
+    - [x] Add revert trasaction if write fail.(https://medium.com/blockchannel/the-use-of-revert-assert-and-require-in-solidity-and-the-new-revert-opcode-in-the-evm-1a3a7990e06e)
+    - [x] The race end with default value. - (add EasyMoneyRace)version 0.0.1
+    - [x] The winner will set named(will be only address if not set) in contract after retrived money back. - version 0.0.1
+    - [ ] Fix set winner enormous gas price. - version 0.0.2
+    - [ ] The race end can be specify by contract deployer. - version 0.0.3
     - [ ] with restricted write command/address - version 0.1.0
     - [ ] with same address can add money until block(x-1) - version 0.1.1
 - [ ] The owner can make a new race with same contract. - (add CreatorMoneyRace) version 0.2.0
