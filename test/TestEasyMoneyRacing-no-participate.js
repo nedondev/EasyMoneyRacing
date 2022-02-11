@@ -1,10 +1,8 @@
-//time advance ref: https://github.com/ejwessel/TimeContract
 const EasyMoneyRacing = artifacts.require("./EasyMoneyRacing");
 const helper = require("../utils/timeAdvanceUtils");
 
-// https://github.com/OpenZeppelin/openzeppelin-test-helpers
 const {
-    expectRevert, // Assertions for transactions that should fail
+    expectRevert,
   } = require('@openzeppelin/test-helpers');
 const { web3 } = require("@openzeppelin/test-helpers/src/setup");
 
@@ -13,15 +11,11 @@ contract("EasyMoneyRacing", (accounts) => {
     let easyMoneyRacing;
     let endBlock;
     let deployedBlock;
-    // let snapshot = {};
     let snapshotContainer = new Object();
-    // What is before after beforeeach aftereach?
-    // https://stackoverflow.com/questions/21418580/what-is-the-difference-between-before-and-beforeeach
+
     before("deploy EasyMoneyRacing Contract", async() => {
-        // easyMoneyRacing = await EasyMoneyRacing.new();
-        // easyMoneyRacing = await EasyMoneyRacing.deployed();
+
         easyMoneyRacing = await EasyMoneyRacing.new({from:accounts[0]});
-        // Snapshot can be used only once. https://spectrum.chat/trufflesuite/ganache/why-can-a-snapshot-only-be-used-once~250c8770-0ca3-4a54-9ded-8975740048eb
     });
 
     it("End block expect to be deployed block + 100.", async () => {
@@ -33,8 +27,6 @@ contract("EasyMoneyRacing", (accounts) => {
         assert.strictEqual(txBlock.blockNumber + 100, endBlock, "Contract did not meet the expect");
     });
 
-
-    // Groups test: https://betterprogramming.pub/a-few-tips-for-unit-testing-ethereum-smart-contract-in-solidity-d804062068fb
     describe("Test Senario 1: no participate in the race.", async () => {
 
         before("Snapshot before test senario", async() => {
@@ -53,7 +45,6 @@ contract("EasyMoneyRacing", (accounts) => {
             });
 
             it("Non-participate: Retrive money", async() => {
-                // https://docs.openzeppelin.com/test-helpers/0.5/api#expect-revert
                 await expectRevert(
                     easyMoneyRacing.retrieveMoney({ from: accounts[0]}),
                     "Race still going."
@@ -76,8 +67,6 @@ contract("EasyMoneyRacing", (accounts) => {
 
             it("Non-participate: Get total participate", async() => {
                 let output = (await easyMoneyRacing.getTotalParticipate({ from: accounts[0]})).toNumber();
-                // assert.strictEqual vs assert.equal
-                // https://www.w3schools.com/nodejs/met_assert_equal.asp
                 assert.strictEqual(output, 0, "output should have been 0");
             });
             

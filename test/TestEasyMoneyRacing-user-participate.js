@@ -1,12 +1,10 @@
-//time advance ref: https://github.com/ejwessel/TimeContract
 const EasyMoneyRacing = artifacts.require("./EasyMoneyRacing");
 const helper = require("../utils/timeAdvanceUtils");
 
-// https://github.com/OpenZeppelin/openzeppelin-test-helpers
 const {
     BN,
     expectEvent,
-    expectRevert, // Assertions for transactions that should fail
+    expectRevert,
   } = require('@openzeppelin/test-helpers');
 const { web3 } = require("@openzeppelin/test-helpers/src/setup");
 
@@ -15,15 +13,9 @@ contract("EasyMoneyRacing", (accounts) => {
     let easyMoneyRacing;
     let endBlock;
     let deployedBlock;
-    // let snapshot = {};
     let snapshotContainer = new Object();
-    // What is before after beforeeach aftereach?
-    // https://stackoverflow.com/questions/21418580/what-is-the-difference-between-before-and-beforeeach
     before("deploy EasyMoneyRacing Contract", async() => {
-        // easyMoneyRacing = await EasyMoneyRacing.new();
-        // easyMoneyRacing = await EasyMoneyRacing.deployed();
         easyMoneyRacing = await EasyMoneyRacing.new({from:accounts[0]});
-        // Snapshot can be used only once. https://spectrum.chat/trufflesuite/ganache/why-can-a-snapshot-only-be-used-once~250c8770-0ca3-4a54-9ded-8975740048eb
     });
 
     it("End block expect to be deployed block + 100.", async () => {
@@ -241,7 +233,6 @@ contract("EasyMoneyRacing", (accounts) => {
                 
                 it("User with most money sent", async() => {
                     const txReceipt = await easyMoneyRacing.setName("", { from: accounts[0]});
-                    // console.log(txReceipt);
                     await expectEvent(
                         txReceipt,
                         "Retrive",
@@ -295,7 +286,6 @@ contract("EasyMoneyRacing", (accounts) => {
                 
                 it("User with most money sent", async() => {
                     const txReceipt = await easyMoneyRacing.setNameWithoutMathUtils({ from: accounts[0]});
-                    // console.log(txReceipt);
                     await expectEvent(
                         txReceipt,
                         "Retrive",
@@ -466,7 +456,6 @@ contract("EasyMoneyRacing", (accounts) => {
                 
                 it("User with most money sent", async() => {
                     const txReceipt = await easyMoneyRacing.setName("", { from: accounts[0]});
-                    // console.log(txReceipt);
                     await expectEvent(
                         txReceipt,
                         "Retrive",
@@ -520,7 +509,6 @@ contract("EasyMoneyRacing", (accounts) => {
                 
                 it("User with most money sent", async() => {
                     const txReceipt = await easyMoneyRacing.setNameWithoutMathUtils({ from: accounts[0]});
-                    // console.log(txReceipt);
                     await expectEvent(
                         txReceipt,
                         "Retrive",
