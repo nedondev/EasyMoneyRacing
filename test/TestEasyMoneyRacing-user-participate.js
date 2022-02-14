@@ -98,22 +98,6 @@ contract("EasyMoneyRacing", (accounts) => {
                 });
             });
             
-            describe("A user participate: Set name without math utils", async () => {
-                it("User without money sent", async() => {
-                    await expectRevert(
-                        easyMoneyRacing.setNameWithoutMathUtils({ from: accounts[1]}),
-                        "Race still going."
-                    );
-                });
-                
-                it("User with most money sent", async() => {
-                    await expectRevert(
-                        easyMoneyRacing.setNameWithoutMathUtils({ from: accounts[0]}),
-                        "Race still going."
-                    );
-                });
-            });
-
             describe("Test call command.", async () => {
 
                 it("A user participate: get total participate", async() => {
@@ -265,59 +249,6 @@ contract("EasyMoneyRacing", (accounts) => {
                     );
                 });
             });
-            
-            describe("A user participate: Set name without math utils", async () => {
-                beforeEach(async() => {
-                    snapshot = await helper.takeSnapshot();
-                    snapshotContainer.participateEndBlock = snapshot['result'];
-                });
-
-                afterEach(async() => {
-                    await helper.revertToSnapshot(snapshotContainer.participateEndBlock);
-                    // console.log("Reverted to Block number:" + await web3.eth.getBlockNumber());
-                });
-
-                it("User without money sent", async() => {
-                    await expectRevert(
-                        easyMoneyRacing.setNameWithoutMathUtils("", { from: accounts[1]}),
-                        "User did not participate."
-                    );
-                });
-                
-                it("User with most money sent", async() => {
-                    const txReceipt = await easyMoneyRacing.setNameWithoutMathUtils({ from: accounts[0]});
-                    await expectEvent(
-                        txReceipt,
-                        "Retrive",
-                        {userAddress : accounts[0], amount: new BN(15), name: ""}
-                    );
-                });
-
-                it("User with most money sent set name", async() => {
-                    const txReceipt = await easyMoneyRacing.setNameWithoutMathUtils("winner", { from: accounts[0]});
-                    await expectEvent(
-                        txReceipt,
-                        "Retrive",
-                        {userAddress : accounts[0], amount: new BN(15), name: "winner"}
-                    );
-                });
-
-                it("User with most money sent set name multiple times", async() => {
-                    await easyMoneyRacing.setNameWithoutMathUtils("winner", { from: accounts[0]});
-                    await expectRevert(
-                        easyMoneyRacing.setNameWithoutMathUtils("winner", { from: accounts[0]}),
-                        "Money have retrieved."
-                    );
-                });
-
-                it("User with most money sent retrieve and set name multiple times", async() => {
-                    await easyMoneyRacing.retrieveMoney({ from: accounts[0]});
-                    await expectRevert(
-                        easyMoneyRacing.setNameWithoutMathUtils("winner", { from: accounts[0]}),
-                        "Money have retrieved."
-                    );
-                });
-            });
 
             describe("Test call command.", async () => {
 
@@ -347,12 +278,6 @@ contract("EasyMoneyRacing", (accounts) => {
                     await helper.advanceBlock();
                     let output = await easyMoneyRacing.showWinner({ from: accounts[0]});
                     assert.strictEqual(output, "", "output should show a warning");
-                });
-
-                it("User participate: Show winner name(with winner have set name)", async() => {
-                    await easyMoneyRacing.setNameWithoutMathUtils("winner", { from: accounts[0]});
-                    let output = await easyMoneyRacing.showWinner({ from: accounts[0]});
-                    assert.strictEqual(output, "winner", "output should show a warning");
                 });
             });
 
@@ -489,59 +414,6 @@ contract("EasyMoneyRacing", (accounts) => {
                 });
             });
             
-            describe("A user participate: Set name without math utils", async () => {
-                beforeEach(async() => {
-                    snapshot = await helper.takeSnapshot();
-                    snapshotContainer.participateEndBlock = snapshot['result'];
-                });
-
-                afterEach(async() => {
-                    await helper.revertToSnapshot(snapshotContainer.participateEndBlock);
-                    // console.log("Reverted to Block number:" + await web3.eth.getBlockNumber());
-                });
-
-                it("User without money sent", async() => {
-                    await expectRevert(
-                        easyMoneyRacing.setNameWithoutMathUtils("", { from: accounts[1]}),
-                        "User did not participate."
-                    );
-                });
-                
-                it("User with most money sent", async() => {
-                    const txReceipt = await easyMoneyRacing.setNameWithoutMathUtils({ from: accounts[0]});
-                    await expectEvent(
-                        txReceipt,
-                        "Retrive",
-                        {userAddress : accounts[0], amount: new BN(15), name: ""}
-                    );
-                });
-
-                it("User with most money sent set name", async() => {
-                    const txReceipt = await easyMoneyRacing.setNameWithoutMathUtils("winner", { from: accounts[0]});
-                    await expectEvent(
-                        txReceipt,
-                        "Retrive",
-                        {userAddress : accounts[0], amount: new BN(15), name: "winner"}
-                    );
-                });
-
-                it("User with most money sent set name multiple times", async() => {
-                    await easyMoneyRacing.setNameWithoutMathUtils("winner", { from: accounts[0]});
-                    await expectRevert(
-                        easyMoneyRacing.setNameWithoutMathUtils("winner", { from: accounts[0]}),
-                        "Money have retrieved."
-                    );
-                });
-
-                it("User with most money sent retrieve and set name multiple times", async() => {
-                    await easyMoneyRacing.retrieveMoney({ from: accounts[0]});
-                    await expectRevert(
-                        easyMoneyRacing.setNameWithoutMathUtils("winner", { from: accounts[0]}),
-                        "Money have retrieved."
-                    );
-                });
-            });
-
             describe("Test call command.", async () => {
 
                 beforeEach(async() => {
@@ -570,12 +442,6 @@ contract("EasyMoneyRacing", (accounts) => {
                     await helper.advanceBlock();
                     let output = await easyMoneyRacing.showWinner({ from: accounts[0]});
                     assert.strictEqual(output, "", "output should show a warning");
-                });
-
-                it("User participate: Show winner name(with winner have set name)", async() => {
-                    await easyMoneyRacing.setNameWithoutMathUtils("winner", { from: accounts[0]});
-                    let output = await easyMoneyRacing.showWinner({ from: accounts[0]});
-                    assert.strictEqual(output, "winner", "output should show a warning");
                 });
             });
 

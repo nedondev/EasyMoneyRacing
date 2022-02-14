@@ -1,6 +1,6 @@
 // contracts/EasyMoneyRacing.sol
 // SPDX-License-Identifier: GPL-3.0
-// version 0.0.1 
+// version 0.0.2
 pragma solidity 0.8.11; 
 
 import "../node_modules/@openzeppelin/contracts/utils/math/Math.sol";
@@ -19,6 +19,10 @@ contract EasyMoneyRacing {
     
     // Participate user address
     address[] private usersAddress;
+
+    // The winner address & paticipated money
+    address private winner;
+    uint256 private winnerMoney = 0;
 
     // Set default end block
     uint public endBlock = block.number + 100;
@@ -40,6 +44,13 @@ contract EasyMoneyRacing {
         require(block.number < endBlock, "Race have ended.");
         require(msg.value > 0, "No money have been sent.");
         
+        // This contract designed that the winner can lower their money but still be winner in money History.
+        /* The current winner cant replace their own money with smaller amount.
+        if(msg.sender == winner){
+            require(msg.value > winnerMoney,"The winner can't lower paticipate money");
+        }
+        */
+
         // Record account in array for looping
         if (0 == usersData[msg.sender].money) {
             usersAddress.push(msg.sender);
@@ -48,6 +59,19 @@ contract EasyMoneyRacing {
         // For version: 0.1.0
         // usersData[msg.sender].money = usersData[msg.sender].money + msg.value;
         usersData[msg.sender].money = msg.value;
+        
+        // This winner and winner money defined method prevent winner to be replace by
+        // The winner lower their money and other paticipate with money lower than highest of previous winner money.
+        // In version 0.0.1 will not have any prevention because the previous user that paticipate before 
+        // the winner lower their money will be replace in that position.
+        // The new winner defined method used to lower the fee of EasyMoneyRacing contract.
+        // Cons of this method: The winner can not step out from their place by themselves.
+        if(msg.value > winnerMoney)
+        {
+            winner = msg.sender;
+        }
+
+        winnerMoney = Math.max(winnerMoney, msg.value);
         
         totalSentMoney += msg.value;
 
@@ -73,16 +97,6 @@ contract EasyMoneyRacing {
         require(block.number >= endBlock, "Race still going.");
         require(usersData[msg.sender].money > 0, "User did not participate.");
         require(usersData[msg.sender].retriveStatus == false, "Money have retrieved.");
-        address winner = usersAddress[0];
-        uint256 mostMoney = usersData[usersAddress[0]].money;
-        for(uint256 userIndex = 1; userIndex < usersAddress.length; userIndex++) {
-            uint256 previousMostMoney = mostMoney;
-            mostMoney = Math.max(mostMoney, usersData[usersAddress[userIndex]].money);
-            if (previousMostMoney != mostMoney)
-            {
-                winner = usersAddress[userIndex];
-            }
-        }
         require(msg.sender == winner, "Only winner can set name.");
         winnerName = name;
         usersData[msg.sender].retriveStatus = true;
@@ -94,29 +108,6 @@ contract EasyMoneyRacing {
         emit Retrive(msg.sender, usersData[msg.sender].money, name);
     }
     
-    // set Name without using openzippelin math utils
-    function setNameWithoutMathUtils(string memory name) external {
-        require(block.number >= endBlock, "Race still going");
-        require(usersData[msg.sender].money > 0, "User did not participate.");
-        require(usersData[msg.sender].retriveStatus == false, "Money have retrieved.");
-        address winner = usersAddress[0];
-        uint256 mostMoney = usersData[usersAddress[0]].money;
-        for(uint256 userIndex = 1; userIndex < usersAddress.length; userIndex++) {
-            if (mostMoney < usersData[usersAddress[userIndex]].money) {
-                mostMoney = usersData[usersAddress[userIndex]].money;
-                winner = usersAddress[userIndex];
-            }
-        }
-        require(msg.sender == winner, "Only winner can set name.");
-        winnerName = name;
-        usersData[msg.sender].retriveStatus = true;
-
-        payable(msg.sender).transfer(usersData[msg.sender].money);
-
-        // Broadcast retrive event
-        emit Retrive(msg.sender, usersData[msg.sender].money, name);
-    }
-
     function getTotalParticipate() public view returns(uint256) {
         return usersAddress.length;
     }

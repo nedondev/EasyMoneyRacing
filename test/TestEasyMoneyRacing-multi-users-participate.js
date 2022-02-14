@@ -48,7 +48,7 @@ contract("EasyMoneyRacing", (accounts) => {
                     await easyMoneyRacing.sendMoney({value:1049 - i,  from: accounts[i]});
                 }
                 for(let i = 0; i< 25; i++){
-                    await easyMoneyRacing.sendMoney({value:1000 + i,  from: accounts[i]});
+                    await easyMoneyRacing.sendMoney({value:1000 - i,  from: accounts[i]});
                 }
                 for(let i = 25; i< 49; i++){
                     await easyMoneyRacing.sendMoney({value:1049 - i,  from: accounts[i]});
@@ -62,7 +62,7 @@ contract("EasyMoneyRacing", (accounts) => {
             
             it("Multi users participate: Get total participate money", async() => {
                 let output = (await easyMoneyRacing.getTotalMoney({ from: accounts[0]})).toNumber();
-                assert.strictEqual(output, (1000+1024)/2*50, "output should have been " + ((1000+1024)/2*50));
+                assert.strictEqual(output, (1024+976)/2*50, "output should have been " + ((1024+976)/2*50));
             });
 
         });
@@ -83,7 +83,7 @@ contract("EasyMoneyRacing", (accounts) => {
                 await expectEvent(
                     txReceipt,
                     "Retrive",
-                    {userAddress : accounts[12], amount: new BN(1012), name: ""}
+                    {userAddress : accounts[12], amount: new BN(988), name: ""}
                 );
             });
             
@@ -92,7 +92,7 @@ contract("EasyMoneyRacing", (accounts) => {
                 await expectEvent(
                     txReceipt,
                     "Retrive",
-                    {userAddress : accounts[24], amount: new BN(1024), name: ""}
+                    {userAddress : accounts[24], amount: new BN(976), name: ""}
                 );
             });
 
@@ -103,57 +103,37 @@ contract("EasyMoneyRacing", (accounts) => {
                 );
             });
 
-            it("Multi users participate: Not the winner can't set Name(without Math utils)", async() => {
-                await expectRevert(
-                    easyMoneyRacing.setNameWithoutMathUtils("not winner", { from: accounts[10]}),
-                    "Only winner can set name."
-                );
-            });
-
             it("Multi users participate: The winner can set Name", async() => {
                 const txReceipt = await easyMoneyRacing.setName("winner", { from: accounts[24]});
                 await expectEvent(
                     txReceipt,
                     "Retrive",
-                    {userAddress : accounts[24], amount: new BN(1024), name: "winner"}
+                    {userAddress : accounts[24], amount: new BN(976), name: "winner"}
                 );
             });
 
-            it("Multi users participate: Not winner can't set Name(without Math utils)", async() => {
-                const txReceipt = await easyMoneyRacing.setNameWithoutMathUtils("winner", { from: accounts[24]});
+            it("Multi users participate: Get total participate after retrieve money and set name", async() => {
+                await easyMoneyRacing.retrieveMoney({ from: accounts[12]});
+                const txReceipt = await easyMoneyRacing.setName("winner", { from: accounts[24]});
                 await expectEvent(
                     txReceipt,
                     "Retrive",
-                    {userAddress : accounts[24], amount: new BN(1024), name: "winner"}
+                    {userAddress : accounts[24], amount: new BN(976), name: "winner"}
                 );
-            });
-            
-            it("Multi users participate: Get total participate after retrieve money and set name", async() => {
-                await easyMoneyRacing.retrieveMoney({ from: accounts[12]});
-                await easyMoneyRacing.setName("winner", { from: accounts[24]});
                 let output = (await easyMoneyRacing.getTotalParticipate({ from: accounts[0]})).toNumber();
                 assert.strictEqual(output, 50, "output should have been 50");
             });
             
-            it("Multi users participate: Get total participate after retrieve money and set name(without Math utils)", async() => {
-                await easyMoneyRacing.retrieveMoney({ from: accounts[12]});
-                await easyMoneyRacing.setNameWithoutMathUtils("winner", { from: accounts[24]});
-                let output = (await easyMoneyRacing.getTotalParticipate({ from: accounts[0]})).toNumber();
-                assert.strictEqual(output, 50, "output should have been 50");
-            });
-
             it("Multi users participate: Get total participate money after retrieve money and set name", async() => {
                 await easyMoneyRacing.retrieveMoney({ from: accounts[12]});
-                await easyMoneyRacing.setName("winner", { from: accounts[24]});
+                const txReceipt = await easyMoneyRacing.setName("winner", { from: accounts[24]});
+                await expectEvent(
+                    txReceipt,
+                    "Retrive",
+                    {userAddress : accounts[24], amount: new BN(976), name: "winner"}
+                );
                 let output = (await easyMoneyRacing.getTotalMoney({ from: accounts[0]})).toNumber();
-                assert.strictEqual(output, (1000+1024)/2*50, "output should have been " + ((1000+1024)/2*50));
-            });
-            
-            it("Multi users participate: Get total participate money after retrieve money and set name(without Math utils)", async() => {
-                await easyMoneyRacing.retrieveMoney({ from: accounts[12]});
-                await easyMoneyRacing.setNameWithoutMathUtils("winner", { from: accounts[24]});
-                let output = (await easyMoneyRacing.getTotalMoney({ from: accounts[0]})).toNumber();
-                assert.strictEqual(output, (1000+1024)/2*50, "output should have been " + ((1000+1024)/2*50));
+                assert.strictEqual(output, (1024+976)/2*50, "output should have been " + ((1024+976)/2*50));
             });
         });
     });

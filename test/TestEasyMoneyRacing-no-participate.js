@@ -58,13 +58,6 @@ contract("EasyMoneyRacing", (accounts) => {
                 );
             });
 
-            it("Non-participate: Set name without math utils", async() => {
-                await expectRevert(
-                    easyMoneyRacing.setNameWithoutMathUtils({ from: accounts[0]}),
-                    "Race still going."
-                );
-            });
-
             it("Non-participate: Get total participate", async() => {
                 let output = (await easyMoneyRacing.getTotalParticipate({ from: accounts[0]})).toNumber();
                 assert.strictEqual(output, 0, "output should have been 0");
@@ -128,13 +121,6 @@ contract("EasyMoneyRacing", (accounts) => {
                 );
             });
 
-            it("Non-participate: Set name without math utils", async() => {
-                await expectRevert(
-                    easyMoneyRacing.setNameWithoutMathUtils({ from: accounts[0]}),
-                    "User did not participate."
-                );
-            });
-
             describe("Test call command.", async () => {
 
                 before(async() => {
@@ -184,13 +170,6 @@ contract("EasyMoneyRacing", (accounts) => {
             it("Non-participate: Set name", async() => {
                 await expectRevert(
                     easyMoneyRacing.setName({ from: accounts[0]}),
-                    "User did not participate."
-                );
-            });
-
-            it("Non-participate: Set name without math utils", async() => {
-                await expectRevert(
-                    easyMoneyRacing.setNameWithoutMathUtils({ from: accounts[0]}),
                     "User did not participate."
                 );
             });
