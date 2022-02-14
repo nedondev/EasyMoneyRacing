@@ -39,13 +39,13 @@ npm install ganache --global
 
 # Init Project
 
-## Start ganache
+- Start ganache
 
 ```bash
 ganache -a 100
 ```
 
-## Clone this project
+- Clone this project
 
 ```bash
 git clone https://github.com/nedondev/EasyMoneyRacing
@@ -73,13 +73,13 @@ truffle migrate
 truffle console
 ```
 
-## Get deployed contract.
+- Get deployed contract.
 
 ```javascript
 const contract = await EasyMoneyRacing.at('<contract-address>');
 ```
 
-## Use deployed contract.
+- Use deployed contract.
 
 ```javascript
 contract.<method-name>()
