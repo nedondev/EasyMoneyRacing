@@ -14,8 +14,10 @@ contract("EasyMoneyRacing", (accounts) => {
     let endBlock;
     let deployedBlock;
     let snapshotContainer = new Object();
+    const endBlockOffsetInput = 100;
+
     before("deploy EasyMoneyRacing Contract", async() => {
-        easyMoneyRacing = await EasyMoneyRacing.new({from:accounts[0]});
+        easyMoneyRacing = await EasyMoneyRacing.new( new BN(endBlockOffsetInput), {from:accounts[0]});
     });
 
     it("End block expect to be deployed block + 100.", async () => {
@@ -24,7 +26,7 @@ contract("EasyMoneyRacing", (accounts) => {
         deployedBlock = txBlock.blockNumber;
         console.log("End block number     :" + endBlock);
         console.log("Deployed block number:" + txBlock.blockNumber);
-        assert.strictEqual(txBlock.blockNumber + 100, endBlock, "Contract did not meet the expect");
+        assert.strictEqual(txBlock.blockNumber + endBlockOffsetInput, endBlock, "Contract did not meet the expect");
     });
 
     describe("Test Senario 3: Multiple users participate in the race.", async () => {

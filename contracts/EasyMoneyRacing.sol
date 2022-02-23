@@ -37,7 +37,11 @@ contract EasyMoneyRacing {
     event Participate(address indexed userAddress, uint amount);
     event Retrive(address indexed userAddress, uint amount, string name);
 
-    constructor(){
+    //constructor(){
+    //}
+
+    constructor(uint _endBlockOffset){
+        endBlock = block.number + _endBlockOffset;
     }
 
     function sendMoney() external payable {

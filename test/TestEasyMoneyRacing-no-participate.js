@@ -2,6 +2,7 @@ const EasyMoneyRacing = artifacts.require("./EasyMoneyRacing");
 const helper = require("../utils/timeAdvanceUtils");
 
 const {
+    BN,
     expectRevert,
   } = require('@openzeppelin/test-helpers');
 const { web3 } = require("@openzeppelin/test-helpers/src/setup");
@@ -13,18 +14,19 @@ contract("EasyMoneyRacing", (accounts) => {
     let deployedBlock;
     let snapshotContainer = new Object();
 
-    before("deploy EasyMoneyRacing Contract", async() => {
+    const endBlockOffsetInput = 432;
 
-        easyMoneyRacing = await EasyMoneyRacing.new({from:accounts[0]});
+    before("deploy EasyMoneyRacing Contract", async() => {
+      easyMoneyRacing = await EasyMoneyRacing.new( new BN(endBlockOffsetInput), {from:accounts[0]});
     });
 
-    it("End block expect to be deployed block + 100.", async () => {
+    it("End block expect to be deployed block + " + endBlockOffsetInput + ".", async () => {
         endBlock = (await easyMoneyRacing.endBlock.call()).toNumber();
         const txBlock = await EasyMoneyRacing.web3.eth.getTransaction(easyMoneyRacing.transactionHash);
         deployedBlock = txBlock.blockNumber;
         console.log("End block number     :" + endBlock);
         console.log("Deployed block number:" + txBlock.blockNumber);
-        assert.strictEqual(txBlock.blockNumber + 100, endBlock, "Contract did not meet the expect");
+        assert.strictEqual(txBlock.blockNumber + endBlockOffsetInput, endBlock, "Contract did not meet the expect");
     });
 
     describe("Test Senario 1: no participate in the race.", async () => {
